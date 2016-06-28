@@ -2,11 +2,9 @@ var fs = require("fs");
 
 var through = require('through')
   , jstransform = require('jstransform')
-  , createVisitors = require('./visitors')
+  , parser = require('./parser')
 
 var processEnvPattern = /[\"\']<%\=\s*ENV\[[\"\']/
-
-// console.log("1");
 
 module.exports = function() {
   var env;
@@ -14,10 +12,8 @@ module.exports = function() {
 
   return function envify(file, argv) {
     if (/\.json$/.test(file)) return through()
-    var envBuf = fs.readFileSync('./.env');
-    
+    var envBuf = fs.readFileSync('./.env');  
     env = envToArr(envBuf);
-    console.log("env", env);
     return through(write, flush)
   };
 
@@ -25,7 +21,6 @@ module.exports = function() {
     var envObjs = [];
     var envStr = envBuf.toString();
     var envArr = envStr.split("\n");
-    // console.log("envArr", envArr);
     envArr.forEach(function (pair) {
       var envObj = {};
       var pairs = pair.split("=");
@@ -43,16 +38,15 @@ module.exports = function() {
 
   function flush() {
     var source = buffer.join('')
-    // console.log("source", processEnvPattern.test(source));
 
     if (processEnvPattern.test(source)) {
-      // console.log("buffer");
       try {
-        //env needs to be an array here
-        var visitors = createVisitors(env)
-        console.log("visitors", visitors);
-        source = jstransform.transform(visitors, source).code
+        // var visitors = createVisitors(env)
+        // console.log("visitors", visitors);
+        // source = jstransform.transform(visitors, source).code
+        source = parser.unerb(source, env);
       } catch(err) {
+        console.log("err", err);
         return this.emit('error', err)
       }
     }

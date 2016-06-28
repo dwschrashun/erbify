@@ -20,8 +20,9 @@
     "tape": "^4.6.0"
   },
   "dependencies": {
-    "through": "~2.3.4",
-    "jstransform": "^11.0.3"
+    "concat-regexp": "0.0.6",
+    "jstransform": "^11.0.3",
+    "through": "~2.3.4"
   },
   "keywords": [
     "environment",
