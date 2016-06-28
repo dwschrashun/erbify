@@ -12,7 +12,13 @@ module.exports = function() {
 
   return function envify(file, argv) {
     if (/\.json$/.test(file)) return through()
-    var envBuf = fs.readFileSync('./.env');  
+    var envPath;
+    try {
+      envPath = fs.accessSync("./../../../.env") 
+    } catch (e) {
+      envPath = "./.env";
+    }
+    var envBuf = fs.readFileSync(envPath);  
     env = envToArr(envBuf);
     return through(write, flush)
   };
