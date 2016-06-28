@@ -1,15 +1,15 @@
 var Syntax = require('jstransform').Syntax
 var utils = require('jstransform/src/utils')
 
-function create(envs) {
-  var args  = [].concat(envs[0]._ || []).concat(envs[1]._ || [])
+function create(env) {
+  var args  = [].concat(env[0]._ || []).concat(env[1]._ || [])
   var purge = args.indexOf('purge') !== -1
 
   function visitProcessEnv(traverse, node, path, state) {
     var key = node.property.name || node.property.value
 
-    for (var i = 0; i < envs.length; i++) {
-      var value = envs[i][key]
+    for (var i = 0; i < env.length; i++) {
+      var value = env[i][key]
       if (value !== undefined) {
         replaceEnv(node, state, value)
         return false

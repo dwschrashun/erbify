@@ -1,1 +1,1 @@
-module.exports = require('./custom')(process.env)
+module.exports = require('./custom')()
