@@ -45,6 +45,7 @@ module.exports = function() {
         // console.log("visitors", visitors);
         // source = jstransform.transform(visitors, source).code
         source = parser.unerb(source, env);
+        console.log("source:::", source);
       } catch(err) {
         console.log("err", err);
         return this.emit('error', err)

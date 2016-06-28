@@ -1,7 +1,7 @@
 {
-  "name": "envify",
-  "version": "3.4.1",
-  "description": "Selectively replace Node-style environment variables with plain strings.",
+  "name": "erbify",
+  "version": "0.0.1",
+  "description": "Selectively replace erb style environment variables with strings.",
   "main": "index.js",
   "scripts": {
     "test": "node test.js | tap-spec"
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git://github.com/hughsk/envify.git"
   },
-  "author": "Hugh Kennedy <hughskennedy@gmail.com> (http://hughskennedy.com/)",
+  "author": "doug schrashun",
   "license": "MIT",
   "devDependencies": {
     "tap-spec": "^4.1.1",

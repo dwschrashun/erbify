@@ -18,6 +18,7 @@ function makeRegexes (env) {
     matcherObj.value = value.replace(/[\'\"]/g, "");
     matchers.push(matcherObj);
   });
+  // console.log("matchers", matchers);
   return matchers;
 }
 
