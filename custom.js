@@ -2,25 +2,32 @@ var fs = require("fs");
 
 var through = require('through')
   , jstransform = require('jstransform')
-  , parser = require('./parser')
+  , parser = require('./parser');
 
-var processEnvPattern = /[\"\']<%\=\s*ENV\[[\"\']/
+var processEnvPattern = /[\"\']<%\=\s*ENV\[[\"\']/;
 
 module.exports = function() {
   var env;
-  var buffer = []
+  var buffer = [];
 
-  return function envify(file, argv) {
-    if (/\.json$/.test(file)) return through()
+  return function erbify(file, argv) {
+    console.log("argv", argv);
+    if (/\.json$/.test(file)) return through();
     var envPath;
-    try {
-      envPath = fs.accessSync("./../../../.env") 
-    } catch (e) {
-      envPath = "./.env";
+    if (argv.root) {
+      envPath = argv.root + "/.env";
+    } else {
+      try {
+        envPath = fs.accessSync("./../../../.env");
+      } catch (e) {
+        envPath = "./.env";
+      }
     }
+    console.log("envpath", envPath);
     var envBuf = fs.readFileSync(envPath);  
     env = envToArr(envBuf);
-    return through(write, flush)
+    console.log("env!", env);
+    return through(write, flush);
   };
 
   function envToArr (envBuf) {
@@ -31,7 +38,7 @@ module.exports = function() {
       var envObj = {};
       var pairs = pair.split("=");
       var key = pairs[0];
-      var value = pairs[1];
+      var value = pairs[1] && pairs[1].replace(/["']/g, "");
       envObj[key] = value;
       if (!!key) envObjs.push(envObj);
     });
@@ -39,11 +46,11 @@ module.exports = function() {
   }
 
   function write(data) {
-    buffer.push(data)
+    buffer.push(data);
   }
 
   function flush() {
-    var source = buffer.join('')
+    var source = buffer.join('');
 
     if (processEnvPattern.test(source)) {
       try {
@@ -54,14 +61,14 @@ module.exports = function() {
         console.log("source:::", source);
       } catch(err) {
         console.log("err", err);
-        return this.emit('error', err)
+        return this.emit('error', err);
       }
     }
 
-    this.queue(source)
-    this.queue(null)
+    this.queue(source);
+    this.queue(null);
   }
-}
+};
 
 
 
