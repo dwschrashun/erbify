@@ -34,7 +34,7 @@ module.exports = function() {
       var envObj = {};
       var pairs = pair.split("=");
       var key = pairs[0];
-      var value = pairs[1];
+      var value = pairs[1] && pairs[1].replace(/["']/g, "");
       envObj[key] = value;
       if (!!key && key.charAt(0) !== "#") envObjs.push(envObj);
     });
