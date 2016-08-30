@@ -1,12 +1,7 @@
-
-
 var concatRegExp = require("concat-regexp");
 
 var openErb = /<%\=\s*ENV\[[\"\']/;
 var closeErb = /[\"\']\]\s*%>/g;
-
-// var openErb = "[\\\"\']<%\\\=\\\s*ENV\\\[[\\\"\']";
-// var closeErb = "[\\\"\']\\\]\\\s*%>";
 
 function makeRegexes (env) {
   var matchers = [];
@@ -18,7 +13,6 @@ function makeRegexes (env) {
     matcherObj.value = value.replace(/[\'\"]/g, "");
     matchers.push(matcherObj);
   });
-  // console.log("matchers", matchers);
   return matchers;
 }
 
