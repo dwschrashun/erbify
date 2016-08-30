@@ -1,17 +1,15 @@
 var fs = require("fs");
-
 var through = require('through')
   , jstransform = require('jstransform')
   , parser = require('./parser');
 
 var processEnvPattern = /[\"\']<%\=\s*ENV\[[\"\']/;
 
-module.exports = function() {
+module.exports = function(file) {
   var env;
   var buffer = [];
 
   return function erbify(file, argv) {
-    console.log("argv", argv);
     if (/\.json$/.test(file)) return through();
     var envPath;
     if (argv.root) {
@@ -23,10 +21,8 @@ module.exports = function() {
         envPath = "./.env";
       }
     }
-    console.log("envpath", envPath);
     var envBuf = fs.readFileSync(envPath);  
     env = envToArr(envBuf);
-    console.log("env!", env);
     return through(write, flush);
   };
 
@@ -38,9 +34,9 @@ module.exports = function() {
       var envObj = {};
       var pairs = pair.split("=");
       var key = pairs[0];
-      var value = pairs[1] && pairs[1].replace(/["']/g, "");
+      var value = pairs[1];
       envObj[key] = value;
-      if (!!key) envObjs.push(envObj);
+      if (!!key && key.charAt(0) !== "#") envObjs.push(envObj);
     });
     return envObjs;
   }
@@ -54,11 +50,7 @@ module.exports = function() {
 
     if (processEnvPattern.test(source)) {
       try {
-        // var visitors = createVisitors(env)
-        // console.log("visitors", visitors);
-        // source = jstransform.transform(visitors, source).code
         source = parser.unerb(source, env);
-        console.log("source:::", source);
       } catch(err) {
         console.log("err", err);
         return this.emit('error', err);
@@ -69,23 +61,3 @@ module.exports = function() {
     this.queue(null);
   }
 };
-
-
-
-    // return new Promise(function (resolve) {
-    //   fs.readFile('./.env', function (err, data) {
-    //     if (err) {
-    //       console.log("error", err)
-    //       return reject(new Error(err));
-    //     }
-    //     env = data;
-    //     console.log("data?", data);
-
-    //     var buffer = []
-    //     argv = argv || {}
-
-    //     // return through(write, flush)
-    //     return resolve(through());
-        
-    //   });
-    // });
