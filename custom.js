@@ -5,7 +5,7 @@ var through = require('through')
 
 var processEnvPattern = /[\"\']<%\=\s*ENV\[[\"\']/;
 
-module.exports = function(file) {
+module.exports = function() {
   var env;
   var buffer = [];
 
