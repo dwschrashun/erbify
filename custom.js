@@ -1,7 +1,6 @@
 var fs = require("fs");
-var through = require('through')
-  , jstransform = require('jstransform')
-  , parser = require('./parser');
+var through = require('through'),
+  parser = require('./parser');
 
 var processEnvPattern = /[\"\']<%\=\s*ENV\[[\"\']/;
 
@@ -9,11 +8,10 @@ module.exports = function() {
   var env;
   var buffer = [];
 
-  return function erbify(file, argv) {
-    if (/\.json$/.test(file)) return through();
+  function parseEnv (options) {
     var envPath;
-    if (argv.root) {
-      envPath = argv.root + "/.env";
+    if (options.root) {
+      envPath = options.root + "/.env";
     } else {
       try {
         envPath = fs.accessSync("./../../../.env");
@@ -22,9 +20,8 @@ module.exports = function() {
       }
     }
     var envBuf = fs.readFileSync(envPath);  
-    env = envToArr(envBuf);
-    return through(write, flush);
-  };
+    return envToArr(envBuf);
+  }
 
   function envToArr (envBuf) {
     var envObjs = [];
@@ -40,7 +37,7 @@ module.exports = function() {
     });
     return envObjs;
   }
-
+  
   function write(data) {
     buffer.push(data);
   }
@@ -60,4 +57,13 @@ module.exports = function() {
     this.queue(source);
     this.queue(null);
   }
+
+  return function erbify(file, argv) {
+    if (/\.erb$/.test(file)) {
+      env = parseEnv(argv);
+      return through(write, flush);
+    } else return through();
+  };
+
+
 };

@@ -1,1 +1,1 @@
-module.exports = require('./custom')()
+module.exports = require('./custom')();
