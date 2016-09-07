@@ -10,8 +10,8 @@ module.exports = function() {
 
   function parseEnv (options) {
     var envPath;
-    if (options.root) {
-      envPath = options.root + "/.env";
+    if (options.envDir) {
+      envPath = options.envDir + "/.env";
     } else {
       try {
         envPath = fs.accessSync("./../../../.env");

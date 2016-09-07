@@ -1,17 +1,15 @@
 # erbify
 
-Selectively replace erb-style environment variables with plain strings. Got a reference to your .env file in your js? This'll hook you up with a replacement without the messing with rails pre-compiling your stuff.
-Available as a standalone CLI tool and a
-[Browserify](http://browserify.org) v2 transform. Based off of [envify](https://github.com/hughsk/envify)
+A [Browserify](http://browserify.org) transform used to selectively replace variables used in erb files with values defined your .env file.
+
+Got a reference to your .env file in your js? This'll hook you up with a replacement without messing with having rails pre-compile your stuff.
+
+Many thanks to [envify](https://github.com/hughsk/envify) for the jump off.
 
 
 ## Installation ##
 
-ATM for use with builder project only.
-
-- Clone from bitbucket into `erbify` folder on same level as builder project
-- `npm install` on builder project
-- done
+`npm install git://github.com/dwschrashun/erbify.git`
 
 
 ## Usage ##
@@ -20,7 +18,14 @@ From root of builder project:
 
 `browserify ENTRY-POINT -t ./node_modules/erbify/index.js -o browserified.js`
 
-Or using browserify-rails
+Or using [browserify-rails](https://github.com/browserify-rails/browserify-rails)
 
-```Rails.Application.configure do
-config.browserify_rails.commandline_options = ["-t ./node_modules/erbify/index.js"]```
+```
+Rails.Application.configure do
+  config.browserify_rails.commandline_options = ["-t ./node_modules/erbify/index.js"]
+end
+```
+
+You can optionally pass in the path to the directory where your .env file is located, using the 'envDir' option (this is probably a good idea):
+
+`config.browserify_rails.commandline_options = ["-t ./node_modules/erbify/index.js --envDir='#{Dir.pwd}'"]`
