@@ -3,25 +3,16 @@
   "version": "0.0.1",
   "description": "Selectively replace erb style environment variables with strings.",
   "main": "index.js",
-  "scripts": {
-    "test": "node test.js | tap-spec"
-  },
-  "bin": {
-    "envify": "bin/envify"
-  },
   "repository": {
     "type": "git",
-    "url": "git://github.com/hughsk/envify.git"
+    "url": "git://github.com/dwschrashun/erbify.git"
   },
   "author": "doug schrashun",
   "license": "MIT",
   "devDependencies": {
-    "tap-spec": "^4.1.1",
-    "tape": "^4.6.0"
   },
   "dependencies": {
     "concat-regexp": "0.0.6",
-    "jstransform": "^11.0.3",
     "through": "~2.3.4"
   },
   "keywords": [
@@ -31,6 +22,8 @@
     "browserify-transform",
     "transform",
     "source",
-    "configuration"
+    "configuration",
+    "erb",
+    "rails"
   ]
 }
