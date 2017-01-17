@@ -7,9 +7,16 @@
     "type": "git",
     "url": "git://github.com/dwschrashun/erbify.git"
   },
+  "bin": {
+    "envify": "./index"
+  },
   "author": "doug schrashun",
   "license": "MIT",
-  "devDependencies": {
+  "devDependencies": {    
+    "browserify": "^13.3.0",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "mock-fs": "^3.12.1",
   },
   "dependencies": {
     "concat-regexp": "0.0.6",
