@@ -9,7 +9,9 @@ module.exports = function() {
   var buffer = [];
 
   function parseEnvs (options) {
-    if (options.stage) {
+    if (options.env) {
+      return envToArr(options.env.replace(/[\'\"]([^\"\']*)[\'\"]\=\>([\'\"][^\"\']*[\'\"]),?/g, function (match, p1, p2) {return p1 + "=" + p2 + "\n";}));
+    } else if (options.stage) {
       var filename = ".env." + options.stage;
       return envToArr(Buffer.concat([fs.readFileSync(parseFilename(options.envDir, ".env")), fs.readFileSync(parseFilename(options.envDir, filename))]));
     } else {
@@ -38,8 +40,8 @@ module.exports = function() {
     envArr.forEach(function (pair) {
       var envObj = {};
       var pairs = pair.split("=");
-      var key = pairs[0];
-      var value = pairs[1] && pairs[1].replace(/["']/g, "");
+      var key = pairs[0].trim();
+      var value = pairs[1] && pairs[1].replace(/["']/g, "").trim();
       envObj[key] = value;
       if (!!key && key.charAt(0) !== "#") envObjs.push(envObj);
     });

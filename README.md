@@ -26,6 +26,10 @@ Rails.Application.configure do
 end
 ```
 
+Follows dotenv conventions for .env file location and naming. If you have an environment specific .env file to load in addition to your global .env file, specify the environment name using the "stage" option.
+
+`config.browserify_rails.commandline_options = ["-t ./node_modules/erbify/index.js --stage='production'"]`
+
 You can optionally pass in the path to the directory where your .env file is located, using the 'envDir' option (this is probably a good idea):
 
 `config.browserify_rails.commandline_options = ["-t ./node_modules/erbify/index.js --envDir='#{Dir.pwd}'"]`
