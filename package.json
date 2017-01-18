@@ -7,9 +7,6 @@
     "type": "git",
     "url": "git://github.com/dwschrashun/erbify.git"
   },
-  "bin": {
-    "envify": "./index"
-  },
   "author": "doug schrashun",
   "license": "MIT",
   "devDependencies": {    
