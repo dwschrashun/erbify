@@ -11,7 +11,7 @@ module.exports = function() {
   function parseEnvs (options) {
     if (options.stage) {
       var filename = ".env." + options.stage;
-      return envToArr(Buffer.concat(fs.readFileSync(parseFilename(options.envDir, ".env"), fs.readFileSync(parseFilename(options.envDir, filename)))));
+      return envToArr(Buffer.concat([fs.readFileSync(parseFilename(options.envDir, ".env")), fs.readFileSync(parseFilename(options.envDir, filename))]));
     } else {
       return envToArr(fs.readFileSync(parseFilename(options.envDir, ".env")));
     }
