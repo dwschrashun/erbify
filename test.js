@@ -6,6 +6,23 @@ var browserify = require("browserify");
 
 describe("erbify", function () {
   var testErbJSContent = "var a = '<%= ENV[\"TEST_VALUE\"] %>';var b = '<%= ENV[\"BEST_VALUE\"] %>';";
+  mock({
+    "./test.js.erb": testErbJSContent
+  });
+  
+  describe("with env contents from rails", function () {
+    it("correctly replaces with a stringfied rails ENV object", function (done) {
+
+      var b = browserify();
+      b.add("./test.js.erb").transform(erbify, {env: "'TEST_VALUE'=>'barf', 'BEST_VALUE'=>'farb'"}).bundle(function(err, buf) {
+        expect(err).to.be.null;
+        expect(buf.toString().indexOf("barf")).to.be.above(-1);
+        expect(buf.toString().indexOf("farb")).to.be.above(-1);
+        expect(buf.toString().indexOf("ENV")).to.equal(-1);
+        done();
+      });
+    });
+  });
 
   describe("with .env file, without options", function () {
     var testNonErbContent = "var a = 'char';var b = 'spar';";
