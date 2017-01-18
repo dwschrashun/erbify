@@ -9,7 +9,6 @@ module.exports = function() {
   var buffer = [];
 
   function parseEnvs (options) {
-    // console.log("options", options.envString)
     if (options.envString) {
       return envToArr(options.envString.replace(/{?[\'\"]([^\"\']*)[\'\"]\=\>([\'\"][^\"\']*[\'\"]),?}?/g, function (match, p1, p2) {return p1 + "=" + p2 + "\n";}));
     } else if (options.stage) {
