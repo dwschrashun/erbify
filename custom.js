@@ -8,19 +8,27 @@ module.exports = function() {
   var env;
   var buffer = [];
 
-  function parseEnv (options) {
+  function parseEnvs (options) {
+    if (options.stage) {
+      var filename = ".env." + options.stage;
+      return envToArr(Buffer.concat(fs.readFileSync(parseFilename(options.envDir, ".env"), fs.readFileSync(parseFilename(otions.envDir, filename)))));
+    } else {
+      return envToArr(fs.readFileSync(parseFilename(options.envDir, ".env")));
+    }
+  }
+
+  function parseFilename (envDir, filename) {
     var envPath;
-    if (options.envDir) {
-      envPath = options.envDir + "/.env";
+    if (envDir) {
+      envPath = envDir + "./" + filename;
     } else {
       try {
-        envPath = fs.accessSync("./../../../.env");
+        envPath = fs.accessSync("./../../../" + filename);
       } catch (e) {
-        envPath = "./.env";
+        envPath = "./" + filename;
       }
     }
-    var envBuf = fs.readFileSync(envPath);  
-    return envToArr(envBuf);
+    return envPath;
   }
 
   function envToArr (envBuf) {
@@ -60,7 +68,7 @@ module.exports = function() {
 
   return function erbify(file, argv) {
     if (/\.erb$/.test(file)) {
-      env = parseEnv(argv);
+      env = parseEnvs(argv);
       return through(write, flush);
     } else return through();
   };
