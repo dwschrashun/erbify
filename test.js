@@ -14,7 +14,7 @@ describe("erbify", function () {
     it("correctly replaces with a stringfied rails ENV object", function (done) {
 
       var b = browserify();
-      b.add("./test.js.erb").transform(erbify, {env: "'TEST_VALUE'=>'barf', 'BEST_VALUE'=>'farb'"}).bundle(function(err, buf) {
+      b.add("./test.js.erb").transform(erbify, {envString: "{'TEST_VALUE'=>'barf', 'BEST_VALUE'=>'farb'}"}).bundle(function(err, buf) {
         expect(err).to.be.null;
         expect(buf.toString().indexOf("barf")).to.be.above(-1);
         expect(buf.toString().indexOf("farb")).to.be.above(-1);

@@ -5,6 +5,7 @@ var closeErb = /[\"\']\]\s*%>/g;
 
 function makeRegexes (env) {
   var matchers = [];
+  console.log("env", env);
   env.forEach(function (envObj) {
     var matcherObj = {};
     var key = Object.getOwnPropertyNames(envObj)[0];

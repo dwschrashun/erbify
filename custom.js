@@ -9,8 +9,9 @@ module.exports = function() {
   var buffer = [];
 
   function parseEnvs (options) {
-    if (options.env) {
-      return envToArr(options.env.replace(/[\'\"]([^\"\']*)[\'\"]\=\>([\'\"][^\"\']*[\'\"]),?/g, function (match, p1, p2) {return p1 + "=" + p2 + "\n";}));
+    // console.log("options", options.envString)
+    if (options.envString) {
+      return envToArr(options.envString.replace(/{?[\'\"]([^\"\']*)[\'\"]\=\>([\'\"][^\"\']*[\'\"]),?}?/g, function (match, p1, p2) {return p1 + "=" + p2 + "\n";}));
     } else if (options.stage) {
       var filename = ".env." + options.stage;
       return envToArr(Buffer.concat([fs.readFileSync(parseFilename(options.envDir, ".env")), fs.readFileSync(parseFilename(options.envDir, filename))]));
