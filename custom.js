@@ -20,7 +20,7 @@ module.exports = function() {
   function parseFilename (envDir, filename) {
     var envPath;
     if (envDir) {
-      envPath = envDir + "./" + filename;
+      envPath = envDir + filename;
     } else {
       try {
         envPath = fs.accessSync("./../../../" + filename);
